@@ -10,6 +10,7 @@ import java.util.Random;
  * Created by pc on 4/20/2016.
  */
 public class MainFrame extends JFrame {
+
     public static final int gameSize = 10;
     public static boolean gameover = false;
     TileButton[][] gameMatrix;
@@ -137,7 +138,7 @@ public class MainFrame extends JFrame {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
+
         startBtn.setBackground(Color.WHITE);
 
         topPanel = new JPanel();
