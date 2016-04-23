@@ -137,6 +137,7 @@ public class MainFrame extends JFrame {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        
         startBtn.setBackground(Color.WHITE);
 
         topPanel = new JPanel();
