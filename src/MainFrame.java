@@ -230,4 +230,46 @@ public class MainFrame extends JFrame {
             e.printStackTrace();
         }
     }
+
+    public static void openAdjacent(int x, int y) {
+        if(x<0 || x>=gameSize || y<0 || y>=gameSize) return;
+        if(gameMatrix[x][y].isOpen()) return;
+
+        gameMatrix[x][y].open(Color.WHITE);
+
+        if(gameMatrix[x][y].type != 0) return;
+
+        // try to open all adjacent tiles
+        openAdjacent(x-1, y);
+        openAdjacent(x-1, y-1);
+        openAdjacent(x-1, y+1);
+        openAdjacent(x+1, y);
+        openAdjacent(x+1, y+1);
+        openAdjacent(x+1, y-1);
+        openAdjacent(x, y+1);
+        openAdjacent(x, y-1);
+    }
+
+    public static boolean isVictory() {
+        for(int i=0; i<gameSize; i++){
+            for(int j=0; j<gameSize; j++){
+                if(gameMatrix[i][j].type != -1 && !gameMatrix[i][j].isOpen()){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public static void sunglassesOn() {
+        gameover = true;
+        try {
+            Image img = ImageIO.read(MainFrame.class.getResource("resources/sunglasses.png"));
+            img = img.getScaledInstance( (int)startBtn.getPreferredSize().getWidth()-startBtnIconGap,
+                    (int)startBtn.getPreferredSize().getHeight()-startBtnIconGap,  java.awt.Image.SCALE_SMOOTH ) ;
+            startBtn.setIcon(new ImageIcon(img));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
