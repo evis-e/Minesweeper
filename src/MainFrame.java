@@ -13,14 +13,15 @@ public class MainFrame extends JFrame {
 
     public static final int gameSize = 10;
     public static boolean gameover = false;
-    TileButton[][] gameMatrix;
-    JButton startBtn = new JButton();
+    static TileButton[][] gameMatrix;
+    static JButton startBtn = new JButton();
     JPanel mainPanel, minesPanel;
     private JPanel topPanel;
+    private static final int startBtnSize = 60, startBtnIconGap = 10 ;
 
     public MainFrame(){
         setTitle("Minesweeper");
-        setSize(300, 350);
+        setSize(400, 460);
         setResizable(false);
         setLocationRelativeTo(null);  //position it in the middle of the screen
 
@@ -34,11 +35,10 @@ public class MainFrame extends JFrame {
                 newGame();
             }
         });
-
     }
 
     private void newGame() {
-        System.out.println("New game");
+        //System.out.println("New game");
         gameover = false;
         gameMatrix = new TileButton[gameSize][gameSize];
 
@@ -49,12 +49,18 @@ public class MainFrame extends JFrame {
         int leftMines = gameSize;
 
         while(leftMines>0){
-            int a = r.nextInt(gameSize), b = r.nextInt(gameSize);
-            if(matrix[a][b] == 0){
+            int a = r.nextInt(10), b = r.nextInt(10);
+            if(matrix[a][b] == 0){  // if empty
                 matrix[a][b] = -1; // put a mine
                 leftMines--;
             }
         }
+//        for(int i=0; i<gameSize; i++){
+//            for(int j=0; j<gameSize; j++){
+//                System.out.print(matrix[i][j] + " ");
+//            }
+//            System.out.println();
+//        }
 
         // set the numbers around the mines
         for(int i=1; i<gameSize-1; i++){
@@ -71,48 +77,78 @@ public class MainFrame extends JFrame {
                 if(matrix[i+1][j-1] == -1) matrix[i][j]++;
             }
         }
-        for(int i=1; i<gameSize-1; i++){
+        for(int k=1; k<gameSize-1; k++){
             // set the top row
-            if(matrix[0][i-1] == -1) matrix[0][i]++;
-            if(matrix[0][i+1] == -1) matrix[0][i]++;
-            if(matrix[1][i] == -1) matrix[0][i]++;
-            if(matrix[1][i+1] == -1) matrix[0][i]++;
-            if(matrix[1][i-1] == -1) matrix[0][i]++;
+            if(matrix[0][k] != -1) {
+                if (matrix[0][k - 1] == -1) matrix[0][k]++;
+                if (matrix[0][k + 1] == -1) matrix[0][k]++;
+                if (matrix[1][k] == -1) matrix[0][k]++;
+                if (matrix[1][k + 1] == -1) matrix[0][k]++;
+                if (matrix[1][k - 1] == -1) matrix[0][k]++;
+            }
 
             // set the bottom row
-            if(matrix[gameSize-1][i-1] == -1) matrix[gameSize-1][i]++;
-            if(matrix[gameSize-1][i+1] == -1) matrix[gameSize-1][i]++;
-            if(matrix[gameSize-2][i+1] == -1) matrix[gameSize-1][i]++;
-            if(matrix[gameSize-2][i] == -1) matrix[gameSize-1][i]++;
-            if(matrix[gameSize-2][i-1] == -1) matrix[gameSize-1][i]++;
+            if(matrix[gameSize-1][k] != -1) {
+                if (matrix[gameSize - 1][k + 1] == -1) matrix[gameSize - 1][k]++;
+                if (matrix[gameSize - 1][k - 1] == -1) matrix[gameSize - 1][k]++;
+                if (matrix[gameSize - 2][k] == -1) matrix[gameSize - 1][k]++;
+                if (matrix[gameSize - 2][k + 1] == -1) matrix[gameSize - 1][k]++;
+                if (matrix[gameSize - 2][k - 1] == -1) matrix[gameSize - 1][k]++;
+            }
 
             //set the left column
-            if(matrix[i-1][0] == -1) matrix[i][0]++;
-            if(matrix[i+1][0] == -1) matrix[i][0]++;
-            if(matrix[i][1] == -1) matrix[i][0]++;
-
+            if(matrix[k][0] != -1) {
+                if (matrix[k - 1][0] == -1) matrix[k][0]++;
+                if (matrix[k + 1][0] == -1) matrix[k][0]++;
+                if (matrix[k][1] == -1) matrix[k][0]++;
+                if (matrix[k - 1][1] == -1) matrix[k][0]++;
+                if (matrix[k + 1][1] == -1) matrix[k][0]++;
+            }
             //set the right column
-            if(matrix[i+1][gameSize-1] == -1) matrix[i][gameSize-1]++;
-            if(matrix[i-1][gameSize-1] == -1) matrix[i][gameSize-1]++;
-            if(matrix[i][gameSize-2] == -1) matrix[i][gameSize-1]++;
+            if(matrix[k][gameSize-1] != -1) {
+                if (matrix[k + 1][gameSize - 1] == -1) matrix[k][gameSize - 1]++;
+                if (matrix[k - 1][gameSize - 1] == -1) matrix[k][gameSize - 1]++;
+                if (matrix[k][gameSize - 2] == -1) matrix[k][gameSize - 1]++;
+                if (matrix[k + 1][gameSize - 2] == -1) matrix[k][gameSize - 1]++;
+                if (matrix[k - 1][gameSize - 2] == -1) matrix[k][gameSize - 1]++;
+            }
         }
 
         // topleft
-        if(matrix[0][1] == -1) matrix[0][0]++;
-        if(matrix[1][1] == -1) matrix[0][0]++;
-        if(matrix[1][0] == -1) matrix[0][0]++;
+        if(matrix[0][0] != -1) {
+            if (matrix[0][1] == -1) matrix[0][0]++;
+            if (matrix[1][1] == -1) matrix[0][0]++;
+            if (matrix[1][0] == -1) matrix[0][0]++;
+        }
+
+        //topright
+        if(matrix[0][gameSize-1] != -1) {
+            if (matrix[0][gameSize - 2] == -1) matrix[0][gameSize - 1]++;
+            if (matrix[1][gameSize - 2] == -1) matrix[0][gameSize - 1]++;
+            if (matrix[1][gameSize - 1] == -1) matrix[0][gameSize - 1]++;
+        }
 
         //bottomleft
-        if(matrix[0][gameSize-2] == -1) matrix[0][gameSize-1]++;
-        if(matrix[1][gameSize-2] == -1) matrix[0][gameSize-1]++;
-        if(matrix[1][gameSize-1] == -1) matrix[0][gameSize-1]++;
+        if(matrix[gameSize-1][0] != -1) {
+            if (matrix[gameSize - 2][0] == -1) matrix[gameSize - 1][0]++;
+            if (matrix[gameSize - 2][1] == -1) matrix[gameSize - 1][0]++;
+            if (matrix[gameSize - 1][1] == -1) matrix[gameSize - 1][0]++;
+        }
 
-        //TODO the other corners
+        //bottomright
+        if(matrix[gameSize-1][gameSize-1] != -1) {
+            if (matrix[gameSize - 2][gameSize - 1] == -1) matrix[gameSize - 1][gameSize - 1]++;
+            if (matrix[gameSize - 2][gameSize - 2] == -1) matrix[gameSize - 1][gameSize - 1]++;
+            if (matrix[gameSize - 1][gameSize - 2] == -1) matrix[gameSize - 1][gameSize - 1]++;
+        }
 
         for(int i=0; i<gameSize; i++){
             for(int j=0; j<gameSize; j++){
+                System.out.print(matrix[i][j] + " ");
                 gameMatrix[i][j] = new TileButton(matrix[i][j], i, j);
+                gameMatrix[i][j].setFocusPainted(false);
             }
+            System.out.println();
         }
 
         try{
@@ -129,35 +165,69 @@ public class MainFrame extends JFrame {
             for(int j=0; j<gameSize; j++)
                 minesPanel.add(gameMatrix[i][j]);
 
-        startBtn.setPreferredSize(new Dimension(50, 50));
+        startBtn.setPreferredSize(new Dimension(startBtnSize, startBtnSize));
 
         try {
             Image img = ImageIO.read(getClass().getResource("resources/smiley.png"));
-            img = img.getScaledInstance( (int)startBtn.getPreferredSize().getWidth()-20, (int)startBtn.getPreferredSize().getHeight()-20,  java.awt.Image.SCALE_SMOOTH ) ;
+            img = img.getScaledInstance( (int)startBtn.getPreferredSize().getWidth()-startBtnIconGap,
+                    (int)startBtn.getPreferredSize().getHeight()-startBtnIconGap,  java.awt.Image.SCALE_SMOOTH ) ;
             startBtn.setIcon(new ImageIcon(img));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+        startBtn.setFocusPainted(false);
         startBtn.setBackground(Color.WHITE);
 
+        // we put the startBtn in the center of the topPanel
         topPanel = new JPanel();
         topPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         topPanel.add(startBtn);
 
+        // mainPanel contains all other panels
         mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout(2, 2));
 
+        // arrange the panels inside the mainPanel
         mainPanel.add(minesPanel, BorderLayout.CENTER);
         mainPanel.add(topPanel, BorderLayout.NORTH);
 
+        //add the mainPanel to the frame
         add(mainPanel);
 
+        // make sure the components are drawn in the screen on game start
         validate();
         repaint();
     }
 
     public static void main(String[] args) {
         new MainFrame();
+    }
+
+    public static void gameOver(int x, int y) {
+        gameover = true;
+
+        // open all the mines
+        for(int i=0; i<gameSize; i++){
+            for(int j=0; j<gameSize; j++){
+                if(gameMatrix[i][j].type == -1){
+                    gameMatrix[i][j].setOpen(Color.WHITE);
+                }
+            }
+        }
+
+        // set the clicked mine to red
+        gameMatrix[x][y].setOpen(Color.RED);
+
+        // change the icon of the startBtn
+
+        try {
+            Image img = ImageIO.read(MainFrame.class.getResource("resources/dead.png"));
+            img = img.getScaledInstance( (int)startBtn.getPreferredSize().getWidth()-startBtnIconGap,
+                    (int)startBtn.getPreferredSize().getHeight()-startBtnIconGap,  java.awt.Image.SCALE_SMOOTH ) ;
+            startBtn.setIcon(new ImageIcon(img));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
